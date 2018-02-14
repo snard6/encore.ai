@@ -17,7 +17,7 @@ class DataReader:
         """
         @return: The path to the specified artist's lyric data.
         """
-        return os.path.join('../data/artists/', self.artist)
+        return os.path.join('/home/ubuntu/eight/encore.ai/data/artists/', self.artist)
 
     # Load all song lyrics into a 2D array
     def load_lyrics(self):

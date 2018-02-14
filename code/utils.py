@@ -1,3 +1,5 @@
+import random
+
 def unkify(string, vocab):
     """
     Translates all words in string that do not appear in vocab to '*UNK*'.
@@ -9,7 +11,13 @@ def unkify(string, vocab):
     """
     words = string.split()
     for i, word in enumerate(words):
-        if word not in vocab:
-            words[i] = '*UNK*'
-
+        if word in vocab:
+            continue
+        if word.lower() in vocab:
+            words[i] = word.lower()
+            continue
+        if word.title() in vocab:
+            words[i] = word.title()
+            continue
+        words[i] = random.choice(vocab)
     return ' '.join(words)

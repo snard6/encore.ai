@@ -173,7 +173,6 @@ class LSTMModel:
 
         # prime the model state
         for word in prime.split():
-            print(word)
             last_word_i = self.vocab.index(word)
             input_i = np.array([[last_word_i]])
 
