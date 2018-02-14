@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import random
+from functools import reduce
 from collections import Counter
 
 import constants as c
@@ -46,7 +47,7 @@ class DataReader:
         # THRESHOLD_COUNT = 10
         # least_referenced = Counter(all_words).most_common()[:-(THRESHOLD_COUNT + 1):-1]
         # least_referenced = [tup[0] for tup in least_referenced] # grab word from (word, count) tuple
-        # print least_referenced
+        # print(least_referenced)
         #
         # self.lyrics = [map(lambda word: c.UNK if word in least_referenced else word, song)
         #                for song in self.lyrics]
@@ -59,10 +60,10 @@ class DataReader:
         # creates a map from word to index
         self.vocab_lookup = dict((word, i) for i, word in enumerate(tokens))
         # Converts words in self.lyrics to the appropriate indices.
-        self.lyric_indices = [map(lambda word: self.vocab_lookup[word], song)
+        self.lyric_indices = [list(map(lambda word: self.vocab_lookup[word], song))
                               for song in self.lyrics]
 
-        print len(tokens)
+        print(len(tokens))
 
         return tokens
 
@@ -78,7 +79,7 @@ class DataReader:
         inputs = np.empty([batch_size, seq_len], dtype=int)
         targets = np.empty([batch_size, seq_len], dtype=int)
 
-        for i in xrange(batch_size):
+        for i in range(batch_size):
             inp, target = self.get_seq(seq_len)
             inputs[i] = inp
             targets[i] = target
@@ -94,7 +95,7 @@ class DataReader:
         @return: A tuple of sequences, (input, target) offset from each other by one word.
         """
         # Pick a random song. Must be longer than seq_len
-        for i in xrange(1000):  # cap at 1000 tries
+        for i in range(1000):  # cap at 1000 tries
             song = random.choice(self.lyric_indices)
             if len(song) > seq_len: break
 

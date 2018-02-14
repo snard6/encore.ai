@@ -25,11 +25,11 @@ class LyricGenRunner:
         self.sess = tf.Session()
         self.artist_name = artist_name
 
-        print 'Process data...'
+        print('Process data...')
         self.data_reader = DataReader(self.artist_name)
         self.vocab = self.data_reader.get_vocab()
 
-        print 'Init model...'
+        print('Init model...')
         self.model = LSTMModel(self.sess,
                                self.vocab,
                                c.BATCH_SIZE,
@@ -38,14 +38,14 @@ class LyricGenRunner:
                                c.NUM_LAYERS,
                                test=test)
 
-        print 'Init variables...'
+        print('Init variables...')
         self.saver = tf.train.Saver(max_to_keep=None)
         self.sess.run(tf.global_variables_initializer())
 
         # if load path specified, load a saved model
         if model_load_path is not None:
             self.saver.restore(self.sess, model_load_path)
-            print 'Model restored from ' + model_load_path
+            print('Model restored from ' + model_load_path)
 
 
         if test:
@@ -59,7 +59,7 @@ class LyricGenRunner:
         """
         while True:
             inputs, targets = self.data_reader.get_train_batch(c.BATCH_SIZE, c.SEQ_LEN)
-            print 'Training model...'
+            print('Training model...')
 
             feed_dict = {self.model.inputs: inputs, self.model.targets: targets}
             global_step, loss, _ = self.sess.run([self.model.global_step,
@@ -67,9 +67,9 @@ class LyricGenRunner:
                                                   self.model.train_op],
                                                  feed_dict=feed_dict)
 
-            print 'Step: %d | loss: %f' % (global_step, loss)
+            print('Step: %d | loss: %f' % (global_step, loss))
             if global_step % c.MODEL_SAVE_FREQ == 0:
-                print 'Saving model...'
+                print('Saving model...')
                 self.saver.save(self.sess, join(c.MODEL_SAVE_DIR, self.artist_name + '.ckpt'),
                                 global_step=global_step)
 
@@ -80,7 +80,7 @@ class LyricGenRunner:
         # generate and save sample sequence
         sample = self.model.generate(prime=prime_text)
 
-        print sample
+        print(sample)
 
 def main():
     load_path = None
