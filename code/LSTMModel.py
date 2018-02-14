@@ -182,7 +182,7 @@ class LSTMModel:
 
         # generate the sequence
         gen_seq = prime
-        for i in xrange(num_out):
+        for i in range(num_out):
             # generate word probabilities
             input_i = np.array([[last_word_i]]) #TODO: use dictionary?
             feed_dict = {self.inputs: input_i, self.initial_state: state}
